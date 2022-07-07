@@ -163,3 +163,6 @@ arch/arm/boot/dts/vendor
 
 # Documentation toolchain
 sphinx_*/
+
+# AI220[1-2] Display Firmware
+!drivers/input/touchscreen/focaltech_*/include/firmware/*
