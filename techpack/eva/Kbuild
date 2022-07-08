@@ -2,5 +2,9 @@
 
 CONFIG_BUILD_VENDORSI := true
 
+LINUXINCLUDE    +=  -I$(srctree)/techpack/eva/include \
+                    -I$(srctree)/techpack/eva/include/uapi \
+                    -I$(srctree)/techpack/eva/include/uapi/eva
+
 # auto-detect subdirs
 obj-y +=msm/

@@ -14,4 +14,8 @@ LINUXINCLUDE    += -I$(srctree)/techpack/eva/include \
 		   -I$(srctree)/techpack/eva/include/uapi/eva
 endif
 
+LINUXINCLUDE    +=  -I$(srctree)/techpack/eva/include \
+                    -I$(srctree)/techpack/eva/include/uapi \
+                    -I$(srctree)/techpack/eva/include/uapi/eva
+
 obj-y +=msm/
