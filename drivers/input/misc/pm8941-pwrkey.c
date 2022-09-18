@@ -403,8 +403,6 @@ static bool is_boot_after_60sec(void)
 
 void report_reboot_key(void)
 {
-	ASUSEvtlog("ASDF: reset device after power press 6 sec \n");
-	ASUSEvtlog("[Reboot] Power key long press 6 sec\n");
 	msleep(200);
 
 	input_report_key(ugly_globa_input, KEY_SUSPEND, 1);

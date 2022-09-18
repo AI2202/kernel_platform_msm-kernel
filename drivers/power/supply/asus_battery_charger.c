@@ -662,7 +662,6 @@ struct delayed_work	asus_min_check_work;
 struct delayed_work	asus_18W_workaround_work;
 //[+++] Add thermal alert adc function
 
-//[+++]Add log to show charging status in ASUSEvtlog.txt
 static char *charging_stats[] = {
 	"UNKNOWN",
 	"CHARGING",
@@ -699,7 +698,6 @@ char *qc_extcon_type[] = {
 };
 struct delayed_work	asus_update_batt_status_work;
 struct timespec64  last_check_time_3m;
-//[---]Add log to show charging status in ASUSEvtlog.txt
 
 #if 0
 static const int battery_prop_map[BATT_PROP_MAX] = {
@@ -2073,7 +2071,6 @@ static void handle_notification(struct battery_chg_dev *bcdev, void *data,
         if (len == sizeof(*evtlog_msg)) {
             evtlog_msg = data;
             pr_err("[adsp] evtlog= %s\n", evtlog_msg->buf);
-            ASUSEvtlog("[BAT][ADSP]%s", evtlog_msg->buf);
         }
         break;
     case OEM_ASUS_EVTLOG_IND:
@@ -2717,13 +2714,11 @@ int asus_set_vbus_attached_status(int value) {
 	//int ret = 0;
 	if (value) {
 		g_vbus_plug = 1;
-		ASUSEvtlog("[BAT][Ser]Cable Plug-in");
 		qti_charge_notify_device_charge();
 		schedule_delayed_work(&asus_min_check_work, 0);
 		schedule_delayed_work(&asus_18W_workaround_work, msecs_to_jiffies(10000));
 	} else {
 		g_vbus_plug = 0;
-		ASUSEvtlog("[BAT][Ser]Cable Plug-out");
 		qti_charge_notify_device_not_charge();
 		//[+++]Reset the parameter for limiting the charging
 		feature_stop_chg_flag = false;
@@ -3325,7 +3320,6 @@ static int print_battery_status(void)
 		qc_extcon_type[g_SWITCH_LEVEL],
 		health_type[bat_health]);
 
-	ASUSEvtlog("[BAT][Ser]%s", battInfo);
 
 	snprintf(battInfo2, sizeof(battInfo2), "report Capacity2 ==>%d, TFCC:%dmAh, TRM:%dmAh, SOH:%d, LT1:%d, LT2:%d\n",
 		bat_cap,
@@ -3335,11 +3329,9 @@ static int print_battery_status(void)
 		ChgPD_Info.lt_max_cell1,
 		ChgPD_Info.lt_max_cell2);
 
-	ASUSEvtlog("[BAT][Ser]%s", battInfo2);
 
 	//ASUS_BSP +++ add to printk the WIFI hotspot & QXDM UTS event
 //porting -	snprintf(UTSInfo, sizeof(UTSInfo), "WIFI_HS=%d, QXDM=%d", g_wifi_hs_en, g_qxdm_en);
-//porting -	ASUSEvtlog("[UTS][Status]%s", UTSInfo);
 	//ASUS_BSP --- add to printk the WIFI hotspot & QXDM UTS event
 
 	ktime_get_coarse_real_ts64(&last_check_time_3m);
@@ -3378,7 +3370,6 @@ void  asus_update_batt_status_worker(struct work_struct *work)
 
 	schedule_delayed_work(&asus_update_batt_status_work, msecs_to_jiffies(180000));
 }
-//[---]Add for ASUSEvtlog print battery status regularly
 
 void get_vbus_status_from_ADSP(void)
 {
@@ -3738,9 +3729,7 @@ int asuslib_init(void) {
 	}
 
 	if (g_Charger_mode)
-		ASUSEvtlog("[BAT][CHG] Enter COS");
 	else
-		ASUSEvtlog("[BAT][CHG] Enter MOS");
 	g_asuslib_init = 1;
 	CHG_DBG_E("Load the asuslib_init Succesfully\n");
 	return rc;
