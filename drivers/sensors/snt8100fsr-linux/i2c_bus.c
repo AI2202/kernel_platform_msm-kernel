@@ -547,9 +547,6 @@ void grip_i2c_add(void){
 	ret = i2c_add_driver(&snt_i2c_driver);
 	if(ret!=0){
 		PRINT_INFO("add driver fail");
-#ifdef GRIP_APPLY_ASUSEVTLOG
-		ASUSEvtlog("[Grip] add driver fail\n");
-#endif
 	}
 	PRINT_INFO("WQ: call set_rst_pin_func");
 	

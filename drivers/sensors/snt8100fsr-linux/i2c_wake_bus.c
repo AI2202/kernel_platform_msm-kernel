@@ -172,9 +172,6 @@ void grip_i2c_wake_add(struct work_struct *work){
 	ret = i2c_add_driver(&snt_i2c_wake_device_driver);
 	if(ret!=0){
 		PRINT_INFO("add wake driver fail");
-#ifdef GRIP_APPLY_ASUSEVTLOG
-		ASUSEvtlog("[Grip] add wake driver fail\n");
-#endif
 	}
 	PRINT_INFO("add i2c wake device");
 }
